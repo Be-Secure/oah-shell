@@ -17,7 +17,8 @@ function __oah_install_env()
 
   echo "Installing the env => $env_repo_name"
   echo "Cloning $git_url =>  $env_base"
-  git_url=$OAH_GITHUB_URL/$env_repo_name.git
+  #git_url=$OAH_GITHUB_URL/$env_repo_name.git
+  git_url=https://github.com/jobyko/$env_repo_name.git
   env_base=$OAH_DIR/data/.envs/$env_repo_name
   git clone $git_url $env_base
 
@@ -25,12 +26,13 @@ function __oah_install_env()
   echo "Installing Ansible roles in $env_base/provisioning/oah-requirements.yml "
   ansible-galaxy install -r $env_base/provisioning/oah-requirements.yml -p $OAH_DIR/data/roles
   echo "Running Ansible playbook $env_base/provisioning/oah-install.yml "
-  ansible-playbook $env_base/provisioning/oah-install.yml -K
+  ansible-playbook $env_base/provisioning/oah-install.yml -K -v
 
 
   #oah_ansible_log=`tail -1 /tmp/log1  | cut -d = -f 7`
-  echo "checking $oah_ansible_log  "
-  if [ $oah_ansible_log -eq 0 ];  then
+  #echo "checking $oah_ansible_log  "
+  #if [ $oah_ansible_log -eq 0 ];  then
+  if [ $? -eq 0 ];  then
 
     current_env=$OAH_DIR/data/env/$env_repo_name
     echo "Creating New Current Env => $current_env"
@@ -40,11 +42,18 @@ function __oah_install_env()
     echo "Copying $env_base/provisioning   => $current_env"
     cp -r $env_base/provisioning   $current_env
     echo "Copying $env_base/tests   => $current_env"
-    cp -r $env_base/tests          $current_env
+    cp -r $env_base/tests          $current_env 2>/dev/null
     echo "Copying $env_base/oah-config.yml  => $current_env"
     cp $env_base/oah-config.yml    $current_env
     echo "Making default config  => $current_env/default.oah-config.yml"
     cp $env_base/oah-config.yml    $current_env/default.oah-config.yml
     echo "Done copying env from $env_base =>  $current_env"
+  else
+    echo "Environment creation failed"
+  fi
+
+  if [ $OPTION2 == "oah-bes-vm" ]; then
+          echo -e "\n\n\nPlease execute below command and start enjoy Be-Secure environment"
+          echo -e "\nsource /home/joby/.besman/bin/besman-init.sh"
   fi
 }
