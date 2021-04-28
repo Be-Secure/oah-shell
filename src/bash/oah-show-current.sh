@@ -19,7 +19,7 @@ function __oah_determine_current_version {
 	fi
 }
 
-function __oah_current {
+function __oah_show_current {
 	if [ -n "$1" ]; then
 		CANDIDATE="$1"
 		__oah_determine_current_version "${CANDIDATE}"
