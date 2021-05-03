@@ -52,8 +52,4 @@ function __oah_install_env()
     echo "Environment creation failed"
   fi
 
-  if [ $OPTION2 == "oah-bes-vm" ]; then
-          echo -e "\n\n\nPlease execute below command and start enjoy Be-Secure environment"
-          echo -e "\nsource /home/joby/.besman/bin/besman-init.sh"
-  fi
 }
