@@ -52,4 +52,7 @@ function __oah_install_env()
     echo "Environment creation failed"
   fi
 
+  Please execute below command and start enjoy Be-Secure environment
+
+source /home/besec/.besman/bin/besman-init.sh
 }
