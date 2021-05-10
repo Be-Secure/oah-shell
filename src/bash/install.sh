@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OAH_NAMESPACE=${OAH_NAMESPACE:=openapphack}
+OAH_NAMESPACE=${OAH_NAMESPACE:=jobyko}
 OAH_ROOT=${OAH_ROOT:="$HOME"}
 OAH_DIR="$OAH_ROOT/.oah"
 OAH_HOST_SERVER=${OAH_HOST_SERVER:=https://raw.githubusercontent.com}
@@ -85,7 +85,7 @@ function downloadScripts() {
   archive_downloaded=n
   for ref in $OAH_VERSION ; do
     #https://github.com/openapphack/oah-shell/archive/0.0.1-1.zip
-    oah_version_url="$OAH_GITHUB_URL/oah-shell/test_install/archives/0.0.1-a1.zip"
+    oah_version_url="$OAH_GITHUB_URL/oah-shell/master/archives/0.0.1-a1.zip"
     oah_zip_file=$OAH_DIR/tmp/oah-$ref.zip
     echo "Fetching $oah_version_url"
     if curl -s -f --head $oah_version_url > /dev/null 2>&1; then
