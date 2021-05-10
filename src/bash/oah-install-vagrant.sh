@@ -1,6 +1,13 @@
 #!/bin/bash
 function __oah_install_vagrant() {
 
+  vagrant up
+  vagrant ssh
+  ansible-playbook /home/vagrant/oah-bes-vm/provisioning/oah-install.yml
+
+}
+function __oah_install_vagrant1() {
+	
   #TODO check $OPTION2 Value
   env_repo_name=$OPTION2
 
