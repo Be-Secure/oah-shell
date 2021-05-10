@@ -6,7 +6,8 @@ function __oah_install_vagrant() {
   ansible-playbook /home/vagrant/oah-bes-vm/provisioning/oah-install.yml
 
 }
-function __oah_install_vagrant1() {
+#function __oah_install_vagrant1() {
+ function __test(){
 	
   #TODO check $OPTION2 Value
   env_repo_name=$OPTION2
