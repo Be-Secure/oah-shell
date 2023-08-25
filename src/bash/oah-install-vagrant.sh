@@ -2,7 +2,7 @@
 function __oah_install_vagrant() {
 
   #TODO check $OPTION2 Value
-  env_repo_name=$OPTION2
+  export env_repo_name=$OPTION2
 
   echo "In Vagrant Install using env repo =>  $OAH_GITHUB_URL/$env_repo_name.git"
 
@@ -17,20 +17,30 @@ function __oah_install_vagrant() {
     echo Environment name is empty. Please specify which environment to install
     return 1
   fi
-  env_base=$OAH_DIR/data/.envs/$env_repo_name
+  if [[ -z "$OAH_ENV_BASE" ]]; then
+
+    env_base=$OAH_DIR/data/.envs/$env_repo_name
+    # cleanup and clone
+    echo "Cloning $git_url =>  $env_base"
+
+    rm -rf $env_base
+    git_url=$OAH_GITHUB_URL/$env_repo_name.git
+    echo "Cloning oah-bes-vm"
+    git clone $git_url $env_base
+    echo "Removing $OAH_DIR/data/env/*"
+
+    rm -rf $OAH_DIR/data/env/*
+  else
+    echo "Using local env base"
+    env_base="$OAH_ENV_BASE/$env_repo_name"
+  fi
+
+
   current_env=$OAH_DIR/data/env/$env_repo_name
 
-  # cleanup and clone
-  echo "Cloning $git_url =>  $env_base"
-
-  rm -rf $env_base
-  git_url=$OAH_GITHUB_URL/$env_repo_name.git
-  git clone $git_url $env_base
 
   # cleanup and update
-  echo "Removing $OAH_DIR/data/env/*"
 
-  rm -rf $OAH_DIR/data/env/*
   echo "Creating New Current Env => $current_env"
   mkdir $current_env
   echo "Copying $env_base/host   => $current_env"

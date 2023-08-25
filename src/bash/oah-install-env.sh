@@ -10,16 +10,23 @@ function __oah_install_env()
     exit 1
   fi
 
-  CURRENT_ENV=`find $OAH_DIR/data/env -mindepth 1 -maxdepth 1  -exec basename {} \;`
+  CURRENT_ENV=$(find $OAH_DIR/data/env -mindepth 1 -maxdepth 1  -exec basename {} \;)
   if [ "$CURRENT_ENV" == "oah-vm" ]; then
     rm -rf $OAH_DIR/data/env/$CURRENT_ENV
   fi
+
+  if [[ -z "$OAH_ENV_BASE" ]]; then
 
   echo "Installing the env => $env_repo_name"
   echo "Cloning $git_url =>  $env_base"
   git_url=$OAH_GITHUB_URL/$env_repo_name.git
   env_base=$OAH_DIR/data/.envs/$env_repo_name
   git clone $git_url $env_base
+
+  else
+    echo "Using local env base $OAH_ENV_BASE"
+    env_base="$OAH_ENV_BASE/$env_repo_name"
+  fi
 
   # TODO should this be after current environment has been swapped?
   echo "Installing Ansible roles in $env_base/provisioning/oah-requirements.yml "
@@ -39,8 +46,8 @@ function __oah_install_env()
     cp -r $env_base/host           $current_env
     echo "Copying $env_base/provisioning   => $current_env"
     cp -r $env_base/provisioning   $current_env
-    echo "Copying $env_base/tests   => $current_env"
-    cp -r $env_base/tests          $current_env
+    #echo "Copying $env_base/tests   => $current_env"
+    #cp -r $env_base/tests          $current_env 
     echo "Copying $env_base/oah-config.yml  => $current_env"
     cp $env_base/oah-config.yml    $current_env
     echo "Making default config  => $current_env/default.oah-config.yml"
